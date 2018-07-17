@@ -33,9 +33,8 @@
     // adding tableView to canvas
     [self.view addSubview:tableView];
     
-    FactsJsonObject *jsonObject = [[FactsJsonObject alloc] init];
-    jsonObject.delegate = self;
-    [jsonObject fetchJsonData];
+    // web service call made to fetch json data
+    [self fetchJsonData];
     
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -44,6 +43,12 @@
     UIRefreshControl *factsRefreshControl = [[UIRefreshControl alloc]init];
     tableView.refreshControl = factsRefreshControl;
     [tableView .refreshControl addTarget:self action:@selector(refreshTableView) forControlEvents:UIControlEventValueChanged];
+}
+
+-(void)fetchJsonData{
+    FactsJsonObject *jsonObject = [[FactsJsonObject alloc] init];
+    jsonObject.delegate = self;
+    [jsonObject fetchJsonData];
 }
 
 -(void) setConstraintsForTableView{
@@ -102,6 +107,7 @@
 
 -(void)refreshTableView{
     if(tableView.refreshControl){
+        [self fetchJsonData];
         [tableView reloadData];
         [tableView.refreshControl endRefreshing];
     }
