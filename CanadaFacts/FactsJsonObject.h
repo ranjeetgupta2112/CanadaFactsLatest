@@ -13,6 +13,7 @@
 
 -(void)updateFactDataInUI:(FactModel *)model;
 -(void)serviceFailedWithError:(NSError *)error;
+-(void)networkFailure:(NSString *)message;
 
 @end
 

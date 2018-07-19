@@ -105,6 +105,14 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+-(void)networkFailure:(NSString *)message{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Internet Connectivity Issue" message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alert animated:YES completion:nil];
+    });
+}
+
 -(void)refreshTableView{
     if(tableView.refreshControl){
         [self fetchJsonData];

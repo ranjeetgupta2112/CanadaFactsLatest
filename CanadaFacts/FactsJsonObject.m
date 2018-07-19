@@ -8,17 +8,25 @@
 
 #import "FactsJsonObject.h"
 #import "FactModel.h"
+#import "Reachability.h"
 
 @implementation FactsJsonObject
 @synthesize responceData = _responceData;
 @synthesize delegate;
 
 - (void)fetchJsonData{
-    self.responceData = [[NSMutableData alloc]init];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json"]];
-    // Create url connection and fire request
-    NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [urlConnection start];
+    Reachability *reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+    [reachability startNotifier];
+    if(reachability.isReachable){
+        self.responceData = [[NSMutableData alloc]init];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json"]];
+        // Create url connection and fire request
+        NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [urlConnection start];
+    }else{
+        [delegate networkFailure:@"Please check your internet connection and try again"];
+    }
+
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
